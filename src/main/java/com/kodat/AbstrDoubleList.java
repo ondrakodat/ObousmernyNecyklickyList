@@ -75,6 +75,28 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
 
     @Override
     public void vlozPredchudce(T data) {
+        if(data == null){
+            throw new NullPointerException("Data jsou null!");
+        }
+        if(jePrazdny()){
+            vlozPrvni(data);
+        }
+
+        Uzel novyPrvek = new Uzel(data);
+        //Nastaveni noveho prvku
+        novyPrvek.naslednik = aktualni;
+        novyPrvek.predchudce = aktualni.predchudce;
+
+        //Nastaveni stavajicich prvku
+        aktualni.predchudce.naslednik = novyPrvek;
+        aktualni.predchudce = novyPrvek;
+
+        if(novyPrvek == hlava){
+            novyPrvek.predchudce = null;
+        }
+
+        aktualni = novyPrvek;
+        pocetPrvku++;
 
     }
 
