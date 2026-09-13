@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.util.Iterator;
 
+
 public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
     Uzel hlava;
     Uzel aktualni;
@@ -35,6 +36,11 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
     @Override
     public boolean jePrazdny() {
        return hlava == null ? true : false;
+    }
+
+    @Override
+    public int mohutnost() {
+        return pocetPrvku;
     }
 
     @Override
@@ -218,8 +224,8 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
             zrus();
             return  prvekNaVraceni.data;
         }
-        posledni.predchudce.naslednik = null;
         posledni = posledni.predchudce;
+        posledni.predchudce.naslednik = null;
         posledni.naslednik = null;
         pocetPrvku--;
         return prvekNaVraceni.data;

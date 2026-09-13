@@ -5,6 +5,7 @@ import java.util.Iterator;
 public interface IAbstrDoubleList<T> extends Iterable{
     void zrus();
     boolean jePrazdny();
+    int mohutnost();
 
     void vlozPrvni(T data);
     void vlozNaslednika(T data);
