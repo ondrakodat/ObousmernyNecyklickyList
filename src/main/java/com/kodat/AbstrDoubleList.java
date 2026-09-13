@@ -60,6 +60,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
         if(aktualni == posledni){
             aktualni.naslednik = novyPrvek;
             novyPrvek.predchudce = aktualni;
+            posledni = novyPrvek;
         }else{
         //Mapovani odkazu nového prvk
         novyPrvek.naslednik = aktualni.naslednik;
@@ -83,9 +84,13 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
             return;
         }
         Uzel novyPrvek = new Uzel(data);
-        if(novyPrvek == hlava){
+        if(aktualni == hlava){
             aktualni.predchudce = novyPrvek;
             novyPrvek.naslednik = aktualni;
+            hlava = novyPrvek;
+            aktualni = novyPrvek;
+            pocetPrvku++;
+            return;
         }
         //Nastaveni noveho prvku
         novyPrvek.naslednik = aktualni;
@@ -194,11 +199,12 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
         }else{
             aktualni.naslednik.predchudce = aktualni.predchudce;
             aktualni.predchudce.naslednik = aktualni.naslednik;
+            pocetPrvku--;
+
             //aktualni = null;
             //Muzeme ho hodit klido na null, ale Java by ho měla automaticky odstranit aby nevysel v paměti
             //V jazyku C nicméně by sme ho museli mazat ručne pomoci např. free
         }
-        pocetPrvku--;
         return prvekNaVraceni.data;
     }
 
@@ -233,11 +239,14 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
         } else if (aktualni == hlava && aktualni.naslednik == posledni) {
             aktualni.naslednik = null;
             posledni = aktualni;
+        }else if (aktualni.naslednik == posledni){
+            odeberPosledni();
         } else{
             aktualni.naslednik.naslednik.predchudce = aktualni;
             aktualni.naslednik = aktualni.naslednik.naslednik;
+            pocetPrvku--;
+
         }
-        pocetPrvku--;
         return prvekNaVraceni.data;
     }
 
