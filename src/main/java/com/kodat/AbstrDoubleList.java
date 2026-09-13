@@ -102,27 +102,54 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
 
     @Override
     public T zpristupniAktualni() {
-        return null;
+        if(aktualni == null){
+            throw new NullPointerException("Aktualni je null");
+        }
+        return aktualni.data;
     }
 
     @Override
     public T zpristupniPrvni() {
-        return null;
+        if(jePrazdny()){
+            throw new RuntimeException("Seznam je prazdny");
+        }
+        if(hlava == null){
+            throw new NullPointerException("Prvni je null");
+        }
+        return hlava.data;
     }
 
     @Override
     public T zpristupniPosledni() {
-        return null;
+        if(jePrazdny()){
+            throw new RuntimeException("Seznam je prazdny");
+        }
+        if(posledni == null){
+            throw new NullPointerException("Posledni je null");
+        }
+        return posledni.data;
     }
 
     @Override
     public T zpristupniNaslednika() {
-        return null;
+        if(jePrazdny()){
+            throw new RuntimeException("Seznam je prazdny");
+        }
+        if(aktualni.naslednik == null){
+            throw new NullPointerException("Posledni je null");
+        }
+        return aktualni.naslednik.data;
     }
 
     @Override
     public T zpristupniPredchudce() {
-        return null;
+        if(jePrazdny()){
+            throw new RuntimeException("Seznam je prazdny");
+        }
+        if(aktualni.predchudce == null){
+            throw new NullPointerException("Posledni je null");
+        }
+        return aktualni.predchudce.data;
     }
 
     @Override
