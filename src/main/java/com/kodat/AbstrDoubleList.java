@@ -51,12 +51,16 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
     public void vlozNaslednika(T data) {
         if(jePrazdny()){
             vlozPrvni(data);
+            return;
         }
         if(data == null){
             throw new NullPointerException("Data jsou null!");
         }
         Uzel novyPrvek = new Uzel(data);
-
+        if(aktualni == posledni){
+            aktualni.naslednik = novyPrvek;
+            novyPrvek.predchudce = aktualni;
+        }else{
         //Mapovani odkazu nového prvk
         novyPrvek.naslednik = aktualni.naslednik;
         novyPrvek.predchudce = aktualni;
@@ -64,11 +68,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
         //Mapovani odkazu stávajících prvků
         aktualni.naslednik.predchudce = novyPrvek;
         aktualni.naslednik = novyPrvek;
-
-        if(aktualni == posledni){
-            aktualni.naslednik = null;
         }
-
         aktualni = novyPrvek;
         pocetPrvku++;
     }
@@ -80,9 +80,13 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
         }
         if(jePrazdny()){
             vlozPrvni(data);
+            return;
         }
-
         Uzel novyPrvek = new Uzel(data);
+        if(novyPrvek == hlava){
+            aktualni.predchudce = novyPrvek;
+            novyPrvek.naslednik = aktualni;
+        }
         //Nastaveni noveho prvku
         novyPrvek.naslednik = aktualni;
         novyPrvek.predchudce = aktualni.predchudce;
@@ -91,9 +95,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
         aktualni.predchudce.naslednik = novyPrvek;
         aktualni.predchudce = novyPrvek;
 
-        if(novyPrvek == hlava){
-            novyPrvek.predchudce = null;
-        }
+
 
         aktualni = novyPrvek;
         pocetPrvku++;
@@ -166,6 +168,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
 
             hlava.naslednik.predchudce = null;
             hlava = hlava.naslednik;
+            pocetPrvku--;
             return prvekNavraceni.data;
         }
     }
@@ -183,14 +186,19 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
         }
         else if(aktualni == hlava){
             odeberPrvni();
+            return prvekNaVraceni.data;
         }
         else if(aktualni == posledni){
             odeberPosledni();
+            return prvekNaVraceni.data;
         }else{
             aktualni.naslednik.predchudce = aktualni.predchudce;
             aktualni.predchudce.naslednik = aktualni.naslednik;
+            //aktualni = null;
+            //Muzeme ho hodit klido na null, ale Java by ho měla automaticky odstranit aby nevysel v paměti
+            //V jazyku C nicméně by sme ho museli mazat ručne pomoci např. free
         }
-
+        pocetPrvku--;
         return prvekNaVraceni.data;
     }
 
@@ -200,22 +208,79 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
             throw new RuntimeException("Seznam je prazdnej nejde nic odebrat");
         }
         Uzel prvekNaVraceni = posledni;
-
+        if(posledni == hlava){
+            zrus();
+            return  prvekNaVraceni.data;
+        }
+        posledni.predchudce.naslednik = null;
+        posledni = posledni.predchudce;
+        posledni.naslednik = null;
+        pocetPrvku--;
         return prvekNaVraceni.data;
     }
 
     @Override
     public T odeberNaslednika() {
-        return null;
+        if(jePrazdny()){
+            throw new RuntimeException("Seznam je prazdny");
+        }
+        if(aktualni.naslednik == null){
+            throw new NullPointerException("Naslednik neexistuje");
+        }
+        Uzel prvekNaVraceni = aktualni.naslednik;
+        if(aktualni == hlava && aktualni == posledni){
+            zrus();
+        } else if (aktualni == hlava && aktualni.naslednik == posledni) {
+            aktualni.naslednik = null;
+            posledni = aktualni;
+        } else{
+            aktualni.naslednik.naslednik.predchudce = aktualni;
+            aktualni.naslednik = aktualni.naslednik.naslednik;
+        }
+        pocetPrvku--;
+        return prvekNaVraceni.data;
     }
 
     @Override
     public T odeberPredchudce() {
-        return null;
+        if(jePrazdny()){
+            throw new RuntimeException("Seznam je prazdny");
+        }
+        if(aktualni.predchudce == null){
+            throw new NullPointerException("Predchudce neexistuje");
+        }
+        Uzel prvekNaVraceni = aktualni.predchudce;
+        if(aktualni == hlava && aktualni == posledni){
+            zrus();
+        }else{
+            aktualni.predchudce.predchudce.naslednik = aktualni;
+            aktualni.predchudce = aktualni.predchudce.predchudce;
+        }
+        pocetPrvku--;
+        return prvekNaVraceni.data;
     }
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new Iterator<T>() {
+            private Uzel prvekProIterator = hlava;
+
+            @Override
+            public boolean hasNext() {
+                return prvekProIterator != null;
+            }
+
+            @Override
+            public T next() {
+                if(hasNext()){
+                    T data = prvekProIterator.data;
+                    prvekProIterator = prvekProIterator.naslednik;
+                    return data;
+                }else{
+                    throw new RuntimeException("Neni dalsi prvek");
+                }
+
+            }
+        };
     }
 }
