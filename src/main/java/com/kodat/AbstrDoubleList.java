@@ -154,17 +154,54 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
 
     @Override
     public T odeberPrvni() {
-        return null;
+        if(jePrazdny()){
+            throw new RuntimeException("Seznam je prazdny");
+        }
+        Uzel prvekNavraceni = hlava;
+        //pokud je prvni zaroven posledni tak mame seznam o jednom prvku a tedy muzeme rovnou zrusit celej
+        if(hlava == posledni){
+            zrus();
+            return prvekNavraceni.data;
+        }else {
+
+            hlava.naslednik.predchudce = null;
+            hlava = hlava.naslednik;
+            return prvekNavraceni.data;
+        }
     }
 
     @Override
     public T odeberAktualni() {
-        return null;
+        if(jePrazdny()){
+            throw new RuntimeException("Seznam je prazdnej nejde nic odebrat");
+        }
+        Uzel prvekNaVraceni = aktualni;
+
+        if(aktualni == hlava && aktualni == posledni){
+            zrus();
+            return prvekNaVraceni.data;
+        }
+        else if(aktualni == hlava){
+            odeberPrvni();
+        }
+        else if(aktualni == posledni){
+            odeberPosledni();
+        }else{
+            aktualni.naslednik.predchudce = aktualni.predchudce;
+            aktualni.predchudce.naslednik = aktualni.naslednik;
+        }
+
+        return prvekNaVraceni.data;
     }
 
     @Override
     public T odeberPosledni() {
-        return null;
+        if(jePrazdny()){
+            throw new RuntimeException("Seznam je prazdnej nejde nic odebrat");
+        }
+        Uzel prvekNaVraceni = posledni;
+
+        return prvekNaVraceni.data;
     }
 
     @Override
