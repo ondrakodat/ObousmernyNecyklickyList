@@ -50,6 +50,12 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
             aktualni = hlava;
             posledni = hlava;
             pocetPrvku++;
+        }else{
+            Uzel novyUzel = new Uzel(data);
+            novyUzel.naslednik = hlava;
+            hlava.predchudce = novyUzel;
+            hlava = novyUzel;
+            pocetPrvku++;
         }
     }
 
