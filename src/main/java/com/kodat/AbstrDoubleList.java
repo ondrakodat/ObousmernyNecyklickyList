@@ -135,6 +135,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
         if(hlava == null){
             throw new NullPointerException("Prvni je null");
         }
+        aktualni = hlava;
         return hlava.data;
     }
 
@@ -146,6 +147,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
         if(posledni == null){
             throw new NullPointerException("Posledni je null");
         }
+        aktualni = posledni;
         return posledni.data;
     }
 
@@ -157,6 +159,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
         if(aktualni.naslednik == null){
             throw new NullPointerException("Posledni je null");
         }
+        aktualni = aktualni.naslednik;
         return aktualni.naslednik.data;
     }
 
@@ -168,6 +171,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
         if(aktualni.predchudce == null){
             throw new NullPointerException("Posledni je null");
         }
+        aktualni = aktualni.predchudce;
         return aktualni.predchudce.data;
     }
 
