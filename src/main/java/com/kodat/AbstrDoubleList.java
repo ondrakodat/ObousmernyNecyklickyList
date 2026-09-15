@@ -187,9 +187,10 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
             return prvekNavraceni.data;
         }else {
 
-            hlava.naslednik.predchudce = null;
             hlava = hlava.naslednik;
+            hlava.predchudce = null;
             pocetPrvku--;
+            aktualni = hlava;
             return prvekNavraceni.data;
         }
     }
@@ -235,7 +236,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
             return  prvekNaVraceni.data;
         }
         posledni = posledni.predchudce;
-        posledni.predchudce.naslednik = null;
+        //posledni.predchudce.naslednik = null;
         posledni.naslednik = null;
         pocetPrvku--;
         return prvekNaVraceni.data;
