@@ -38,7 +38,7 @@ public class AbstrDoubleListTest {
         testyString.vlozPrvni("DruhyPrvek");
         testyString.vlozPrvni("TretiPrvek");
         int ocekavanyPocetPrvku = 3;
-        System.out.println("Pocet prvků v testyString odebiraniPoslednihoPrvku : " + testyString.mohutnost());
+        //System.out.println("Pocet prvků v testyString odebiraniPoslednihoPrvku : " + testyString.mohutnost());
         Assert.assertEquals(ocekavanyPocetPrvku, testyString.mohutnost());
         //Testovani odebirani prvku
         String ocekavanyOdebranyPosledniPrvek = "PrvniPrvek";
@@ -58,8 +58,67 @@ public class AbstrDoubleListTest {
 
         Assert.assertEquals(ocevanyPocetPrvkuPoOdebrani, aktualniPocetPrvkuPoOdebrani);
 
+    }
+
+    @Test
+    public void OtestujOdebiraniPrvnihoPrvku(){
+        AbstrDoubleList<String> testyString = new AbstrDoubleList();
+        testyString.vlozPrvni("PrvniPrvek");
+        testyString.vlozPrvni("DruhyPrvek");
+        testyString.vlozPrvni("TretiPrvek");
+
+        String ocekavanyOdebranyPrvniPrvek1 = "TretiPrvek";
+        String ocekavanyOdebranyPrvniPrvek2 = "DruhyPrvek";
+        String ocekavanyOdebranyPrvniPrvek3 = "PrvniPrvek";
+
+        String aktualniOdebranyPrvniPrvek1 = testyString.odeberPrvni();
+        String aktualniOdebranyPrvniPrvek2 = testyString.odeberPrvni();
+        String aktualniOdebranyPrvniPrvek3 = testyString.odeberPrvni();
+
+        Assert.assertEquals(ocekavanyOdebranyPrvniPrvek1, aktualniOdebranyPrvniPrvek1);
+        Assert.assertEquals(ocekavanyOdebranyPrvniPrvek2, aktualniOdebranyPrvniPrvek2);
+        Assert.assertEquals(ocekavanyOdebranyPrvniPrvek3, aktualniOdebranyPrvniPrvek3);
+    }
+
+    @Test
+    public void OtestujOdebraniNaslednika(){
+        AbstrDoubleList<String> testyString = new AbstrDoubleList();
+        testyString.vlozPrvni("PrvniPrvek");
+        testyString.vlozPrvni("DruhyPrvek");
+        testyString.vlozPrvni("TretiPrvek");
+
+        String ocekavanyOdebranyPrvniPrvek1 = "TretiPrvek";
+        String ocekavanyOdebranyPrvniPrvek2 = "DruhyPrvek";
+        String ocekavanyOdebranyPrvniPrvek3 = "PrvniPrvek";
+        testyString.zpristupniPrvni();
+
+        String aktualniOdebranyPrvniPrvek1 = testyString.odeberAktualni();
+        String aktualniOdebranyPrvniPrvek2 = testyString.odeberAktualni();
+        String aktualniOdebranyPrvniPrvek3 = testyString.odeberAktualni();
 
 
+        Assert.assertEquals(ocekavanyOdebranyPrvniPrvek1, aktualniOdebranyPrvniPrvek1);
+        Assert.assertEquals(ocekavanyOdebranyPrvniPrvek2, aktualniOdebranyPrvniPrvek2);
+        Assert.assertEquals(ocekavanyOdebranyPrvniPrvek3, aktualniOdebranyPrvniPrvek3);
+
+    }
+
+    @Test
+    public void OtestujOdebraniPredchudce(){
+        AbstrDoubleList<String> testyString = new AbstrDoubleList();
+        testyString.vlozPrvni("PrvniPrvek");
+        testyString.vlozPrvni("DruhyPrvek");
+        testyString.vlozPrvni("TretiPrvek");
+
+        String ocekavanyOdebranyPrvniPrvek1 = "DruhyPrvek";
+        String ocekavanyOdebranyPrvniPrvek2 = "TretiPrvek";
+        testyString.zpristupniPosledni();
+        String aktualniOdebranyPrvniPrvek1 = testyString.odeberPredchudce();
+        String aktualniOdebranyPrvniPrvek2 = testyString.odeberPredchudce();
+
+        Assert.assertEquals(ocekavanyOdebranyPrvniPrvek1, aktualniOdebranyPrvniPrvek1);
+        Assert.assertEquals(ocekavanyOdebranyPrvniPrvek2, aktualniOdebranyPrvniPrvek2);
+        Assert.assertThrows(RuntimeException.class,() -> testyString.odeberPredchudce());
 
     }
 

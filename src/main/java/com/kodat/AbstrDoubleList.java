@@ -55,6 +55,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
             novyUzel.naslednik = hlava;
             hlava.predchudce = novyUzel;
             hlava = novyUzel;
+            aktualni = hlava;
             pocetPrvku++;
         }
     }
@@ -216,6 +217,7 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
         }else{
             aktualni.naslednik.predchudce = aktualni.predchudce;
             aktualni.predchudce.naslednik = aktualni.naslednik;
+            aktualni = aktualni.naslednik;
             pocetPrvku--;
 
             //aktualni = null;
@@ -272,17 +274,22 @@ public class AbstrDoubleList<T> implements IAbstrDoubleList<T>{
         if(jePrazdny()){
             throw new RuntimeException("Seznam je prazdny");
         }
-        if(aktualni.predchudce == null){
-            throw new NullPointerException("Predchudce neexistuje");
-        }
+
         Uzel prvekNaVraceni = aktualni.predchudce;
+
+        if(prvekNaVraceni == null){
+            throw new RuntimeException("Predchudce je null");
+        }
         if(aktualni == hlava && aktualni == posledni){
             zrus();
+        }else if( aktualni.predchudce == hlava){
+            odeberPrvni();
         }else{
             aktualni.predchudce.predchudce.naslednik = aktualni;
             aktualni.predchudce = aktualni.predchudce.predchudce;
+            pocetPrvku--;
+
         }
-        pocetPrvku--;
         return prvekNaVraceni.data;
     }
 
